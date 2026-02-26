@@ -164,13 +164,19 @@ import { useRouter } from 'vue-router';
 import BackendLayout from '@/components/BackendLayout.vue';
 import { Users, FileCheck, TrendingUp, Clock, CheckCircle, Coins, Lock } from 'lucide-vue-next';
 import { listBackendApplications } from '@/services/mock-api/backendApplicationsApi';
-import * as echarts from 'echarts';
+import { init, use } from 'echarts/core';
+import { BarChart, PieChart } from 'echarts/charts';
+import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import { UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
 import type { EChartsOption } from 'echarts';
 
 const router = useRouter();
 const adminChartEl = ref<HTMLElement | null>(null);
 const activeChartTab = ref<'trend' | 'type' | 'sales'>('trend');
-let adminChart: ReturnType<typeof echarts.init> | null = null;
+use([BarChart, PieChart, GridComponent, TooltipComponent, LegendComponent, UniversalTransition, CanvasRenderer]);
+
+let adminChart: ReturnType<typeof init> | null = null;
 let resizeObserver: ResizeObserver | null = null;
 let statsAnimationFrame: number | null = null;
 const handleWindowResize = () => {
@@ -411,7 +417,7 @@ const loadAdminCharts = async () => {
 
   await nextTick();
   if (!adminChartEl.value) return;
-  if (!adminChart) adminChart = echarts.init(adminChartEl.value);
+  if (!adminChart) adminChart = init(adminChartEl.value);
 
   if (activeChartTab.value === 'trend') {
     adminChart.setOption(trendZeroOption, true);

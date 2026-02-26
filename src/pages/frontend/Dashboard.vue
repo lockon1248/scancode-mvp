@@ -159,7 +159,10 @@ import { formatDisplayDateTime } from '@/services/mock-api/core';
 import { listCompanyScans } from '@/services/mock-api/scanApi';
 import { useFrontendSession } from '@/services/state/frontendSession';
 import type { ScanTask } from '@/services/types/model';
-import * as echarts from 'echarts';
+import { init, use } from 'echarts/core';
+import { LineChart, BarChart } from 'echarts/charts';
+import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
 
 const router = useRouter();
 const { sessionUser, sessionCompany } = useFrontendSession();
@@ -173,7 +176,9 @@ const creditStatusFilter = ref<'all' | 'completed'>('all');
 const issueRangeDays = ref<7 | 30 | 90>(30);
 const issueBucket = ref<'day' | 'week'>('day');
 const trendChartEl = ref<HTMLElement | null>(null);
-let trendChart: ReturnType<typeof echarts.init> | null = null;
+use([LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
+
+let trendChart: ReturnType<typeof init> | null = null;
 let resizeObserver: ResizeObserver | null = null;
 
 const rangeOptions = [
@@ -471,7 +476,7 @@ const renderTrendChart = async () => {
   await nextTick();
   if (!trendChartEl.value) return;
   if (!trendChart) {
-    trendChart = echarts.init(trendChartEl.value);
+    trendChart = init(trendChartEl.value);
   }
   trendChart.setOption(currentChartOption.value, true);
 };
