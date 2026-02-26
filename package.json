@@ -1,0 +1,25 @@
+{
+  "name": "orange-admin-system",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "echarts": "^6.0.0",
+    "lucide-vue-next": "*",
+    "vue": "*",
+    "vue-router": "*"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@types/node": "^20.10.0",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "tailwindcss": "^4.1.13",
+    "vite": "^5.4.19"
+  },
+  "scripts": {
+    "tw:build": "tailwindcss -i ./src/styles/globals.css -o ./src/styles/tailwind-built.css --minify",
+    "predev": "npm run tw:build",
+    "prebuild": "npm run tw:build",
+    "dev": "vite",
+    "build": "vite build"
+  }
+}
